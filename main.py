@@ -1,16 +1,18 @@
-# create network visualization
+### create network visualization
 
-import os.path
-import pandas as pd
+# import packages
+import networkx as nx
+# import matplotlib.pyplot as plt
+# from mpl_toolkits.basemap import Basemap as bm
 
 from read_data import read_data
 
 # specify input file
-directory = os.path.dirname(__file__)
 filename = 'network_input.xlsx'
-inputFile = os.path.join(directory, filename)
 
 # read network data
-(airports, routes) = read_data(inputFile)
+(airports, routes) = read_data(filename)
 
+# generate graph network
+graph = nx.from_pandas_edgelist(routes, source='origin', target='destination', edge_attr='frequency',create_using=nx.DiGraph())
 a=1
