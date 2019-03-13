@@ -22,7 +22,8 @@ import networkx as nx
 from mpl_toolkits.basemap import Basemap as bm
 
 
-def plot_bm(graph, airports, routes, directory, figure_name, figure_x=9, figure_y=10, figure_format="png", resolution=300):
+def plot_bm(graph, nodes, edges, header_nodes, header_edges, directory, figure_name, figure_x=9, figure_y=10, figure_format="png", resolution=300):
+
 
     # setup Basemap style
     plt.figure(figsize=(figure_x, figure_y))
@@ -39,10 +40,10 @@ def plot_bm(graph, airports, routes, directory, figure_name, figure_x=9, figure_
 
     # prepare position data
     offset = 100000
-    mx, my = m(airports['longitude'].values, airports['latitude'].values)
+    mx, my = m(nodes[header_nodes[2]].values, nodes[header_nodes[1]].values)
     pos = {}
     pos_label = {}
-    for count, elem in enumerate(airports['airport']):
+    for count, elem in enumerate(nodes[header_nodes[0]]):
         pos[elem] = (mx[count], my[count])
         pos_label[elem] = (mx[count] + offset, my[count] + offset)
 
@@ -59,19 +60,19 @@ def plot_bm(graph, airports, routes, directory, figure_name, figure_x=9, figure_
         G=graph,
         pos=pos,
         edge_color='g',
-        width=routes['frequency'],
+        width=edges[header_edges[2]],
         alpha=1,
         arrows=False
     )
     nx.draw_networkx_labels(
         G=graph,
         pos=pos_label,
-        label=airports['airport'],
+        label=nodes[header_nodes[0]],
         font_size=16,
         font_color='k'
     )
 
-    # print network on map
+    # draw map details
     m.drawcountries(linewidth=1)
     m.drawstates(linewidth=0.2)
     m.drawcoastlines(linewidth=1)
