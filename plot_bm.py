@@ -22,8 +22,11 @@ import networkx as nx
 from mpl_toolkits.basemap import Basemap as bm
 
 
-def plot_bm(graph, nodes, edges, header_nodes, header_edges, directory, figure_name, figure_x=9, figure_y=10, figure_format="png", resolution=300):
+def plot_bm(graph, nodes, edges, directory, figure_name, figure_x=9, figure_y=10, figure_format="png", resolution=300):
 
+    # read dataframe headers
+    header_nodes = list(nodes)
+    header_edges = list(edges)
 
     # setup Basemap style
     plt.figure(figsize=(figure_x, figure_y))
@@ -47,6 +50,12 @@ def plot_bm(graph, nodes, edges, header_nodes, header_edges, directory, figure_n
         pos[elem] = (mx[count], my[count])
         pos_label[elem] = (mx[count] + offset, my[count] + offset)
 
+    # prepare node and edge attributes
+    width = [graph[i][j][header_edges[2]] for i, j in graph.edges]
+    edge_labels = nx.get_edge_attributes(graph, header_edges[3])
+
+
+
     # add attributes to network
     nx.draw_networkx_nodes(
         G=graph,
@@ -59,8 +68,9 @@ def plot_bm(graph, nodes, edges, header_nodes, header_edges, directory, figure_n
     nx.draw_networkx_edges(
         G=graph,
         pos=pos,
+        edges=edges,
         edge_color='g',
-        width=edges[header_edges[2]],
+        width=width,
         alpha=1,
         arrows=False
     )
@@ -70,6 +80,11 @@ def plot_bm(graph, nodes, edges, header_nodes, header_edges, directory, figure_n
         label=nodes[header_nodes[0]],
         font_size=16,
         font_color='k'
+    )
+    nx.draw_networkx_edge_labels(
+        G=graph,
+        pos=pos,
+        edge_labels=edge_labels
     )
 
     # draw map details

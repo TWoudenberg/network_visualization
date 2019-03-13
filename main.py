@@ -22,8 +22,12 @@ filename = 'network_input.xlsx'
 header_airports = list(airports)
 header_routes = list(routes)
 
+# add to Routes: 3: route label
+routes["routelabels"] = routes[header_routes[0]].map(str) + ' - ' + routes[header_routes[1]]
+header_routes = list(routes)
+
 # Generate graph network
-graph = nx.from_pandas_edgelist(routes, source=header_routes[0], target=header_routes[1], edge_attr=header_routes[2], create_using=nx.DiGraph())
+graph = nx.from_pandas_edgelist(routes, source=header_routes[0], target=header_routes[1], edge_attr=[header_routes[2], header_routes[3]], create_using=nx.DiGraph())
 
 # Plotting figure style 1
 # figure_name = "figures/map_nx.png"
@@ -31,4 +35,4 @@ graph = nx.from_pandas_edgelist(routes, source=header_routes[0], target=header_r
 
 # Plotting figure style 2
 figure_name = "figures/map_bm.png"
-plot_bm(graph, airports, routes, header_airports, header_routes, directory, figure_name)
+plot_bm(graph, airports, routes, directory, figure_name)
