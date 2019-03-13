@@ -26,8 +26,16 @@ def plot_bm(graph, airports, routes, directory, figure_name, figure_x=9, figure_
 
     # setup Basemap style
     plt.figure(figsize=(figure_x, figure_y))
-    m = bm(projection='merc', llcrnrlon=125, llcrnrlat=25, urcrnrlon=145,
-                urcrnrlat=45, lat_ts=0, resolution='l', suppress_ticks=True)
+    m = bm(
+        projection='merc',
+        llcrnrlon=125,
+        llcrnrlat=25,
+        urcrnrlon=145,
+                urcrnrlat=45,
+        lat_ts=0,
+        resolution='l',
+        suppress_ticks=True
+    )
 
     # prepare position data
     offset = 100000
@@ -39,9 +47,29 @@ def plot_bm(graph, airports, routes, directory, figure_name, figure_x=9, figure_
         pos_label[elem] = (mx[count] + offset, my[count] + offset)
 
     # add attributes to network
-    nx.draw_networkx_nodes(G=graph, pos=pos, node_list=graph.nodes(), node_color='r', alpha=1, node_size=100)
-    nx.draw_networkx_edges(G=graph, pos=pos, edge_color='g', width=routes['frequency'], alpha=1, arrows=False)
-    nx.draw_networkx_labels(G=graph, pos=pos_label, label=airports['airport'], font_size=16, font_color='k')
+    nx.draw_networkx_nodes(
+        G=graph,
+        pos=pos,
+        node_list=graph.nodes(),
+        node_color='r',
+        alpha=1,
+        node_size=100
+    )
+    nx.draw_networkx_edges(
+        G=graph,
+        pos=pos,
+        edge_color='g',
+        width=routes['frequency'],
+        alpha=1,
+        arrows=False
+    )
+    nx.draw_networkx_labels(
+        G=graph,
+        pos=pos_label,
+        label=airports['airport'],
+        font_size=16,
+        font_color='k'
+    )
 
     # print network on map
     m.drawcountries(linewidth=1)
